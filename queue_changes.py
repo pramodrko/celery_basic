@@ -21,7 +21,7 @@ def insertion(x,y):
         pass
     result = AsyncResult(celery_results.id).result
     print("DDDDDDDDDDDDDDDDDDDDDDD", str(result))
-    return str(result) + "added to database"
+    return str(result)
 
 def deletion(x,y):
     print("XXXXXXXXXX")
@@ -30,7 +30,7 @@ def deletion(x,y):
         pass
     result = AsyncResult(celery_results.id).result
     print("DDDDDDDDDDDDDDDDDDDDDDD", str(result))
-    return str(result) + ":Deleted from to database"
+    return str(result)
 
 def updation(x,y):
     print("XXXXXXXXXX")
@@ -39,7 +39,7 @@ def updation(x,y):
         pass
     result = AsyncResult(celery_results.id).result
     print("DDDDDDDDDDDDDDDDDDDDDDD", str(result))
-    return str(result) + "'s:role updated in database"
+    return str(result)
 def showdata():
     print("XXXXX")
     celery_results = app1.send_task('celerybasic.show', queue = 'app_queue')
@@ -56,4 +56,5 @@ def selection(x,y):
         pass
     result = AsyncResult(celery_results.id).result
     print("DDDDDDDD",str(result))
+
     return str(result)

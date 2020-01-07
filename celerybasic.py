@@ -23,28 +23,41 @@ def add(x,y):
     session.flush()
     session.commit()
 
-    return z
+    return z + "added to database"
 
 @app1.task
 def dell(x,y):
     usr1 = session.query(Crud).filter(Crud.name == str(x)).first()
-    session.delete(usr1)
-    z = str(x) + str(y)
+    try:
+        session.delete(usr1)
+    except:
+        z = "Given name {} does not exist....".format(x)
+        return z
+    z = str(x) + "'s role changed to  " +str(y)
     print(usr1.name,usr1.role)
     session.flush()
     session.commit()
-    return z
+    return z  + ":Deleted from to database"
 @app1.task
 def upp(x,y):
     usr1 = session.query(Crud).filter(Crud.name == str(x)).first()
-    usr1.role = y
+    # if not usr1:
+    #     return "Nothing to be updated"
+    try:
+        usr1.role = y
+    except:
+        return "{} name does not exists in table crud".format(x)
     session.flush()
     session.commit()
-    return str(x)
+
+
+    return str(x)  + "'s:role updated in database"
 @app1.task
 def show():
     data=""
     row = session.query(Crud).all()
+    if not row:
+        data = "Data Not found"
     for row1 in row:
         data += " " +str(row1.name) + " is " + str(row1.role)+"\n"
     return data
@@ -55,6 +68,8 @@ def select(x,y):
     row = session.query(Crud).filter(text("{} ='{}' ".format(x,y))).all()
     #row = session.query(Crud).filter(Crud.name == x).all()
     #row = session.execute("select * from crud where {} = '{}'".format(x,y))
+    if not row:
+        data = "Data Not found"
     for row1 in row:
         data += " " + str(row1.name) + " is " + str(row1.role) + "\n"
 
